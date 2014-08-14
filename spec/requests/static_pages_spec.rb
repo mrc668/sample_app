@@ -21,6 +21,12 @@ describe "Static pages" do
       expect(page).to have_title("#{base_title}")
     end
 
+    it "should not have the title base title" do
+      visit "#{myurl}"
+
+      expect(page).not_to have_title("#{base_title} | Home")
+    end
+
   end # Home
 
 #
