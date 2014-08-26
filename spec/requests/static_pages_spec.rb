@@ -6,23 +6,26 @@ describe "Static pages" do
 #
 # Home
 #
+#visit "#{myurl}"
+#
+#
   describe "Home Page" do
     let(:myurl) {"/static_pages/home"}
 
     it "should have the content 'Sample App'" do
-      visit "#{myurl}"
+      visit root_path
 
       expect(page).to have_content('Sample App')
     end
 
     it "should have the title base title" do
-      visit "#{myurl}"
+      visit root_path
 
       expect(page).to have_title("#{base_title}")
     end
 
     it "should not have the title base title" do
-      visit "#{myurl}"
+      visit root_path
 
       expect(page).not_to have_title("#{base_title} | Home")
     end
@@ -36,13 +39,13 @@ describe "Static pages" do
     let(:myurl) {"/static_pages/help"}
 
     it "should have the content 'Help'" do
-      visit "#{myurl}"
+      visit help_path
 
       expect(page).to have_content('Help')
     end
 
     it "should have a title base_title | Help" do
-      visit "#{myurl}"
+      visit help_path
 
       expect(page).to have_title("#{base_title} | Help")
     end
@@ -56,13 +59,13 @@ describe "Static pages" do
     let(:myurl) {"/static_pages/about"}
 
     it "should have the content 'About Us'" do
-      visit "#{myurl}"
+      visit about_path
 
       expect(page).to have_content('About Us')
     end
 
     it "should have the title base_title | About Us" do
-      visit "#{myurl}"
+      visit about_path
 
       expect(page).to have_title("#{base_title} | About Us")
     end
@@ -76,7 +79,7 @@ describe "Static pages" do
     let(:myurl) {"/static_pages/contact"}
 
     it "should have the content 'Contact Us'" do
-      visit "#{myurl}"
+      visit contact_path
 
       expect(page).to have_content('Contact Us')
       expect(page).to have_content('306 581 5046')
@@ -84,7 +87,7 @@ describe "Static pages" do
     end
 
     it "should have the title base_title | Contact Us" do
-      visit "#{myurl}"
+      visit contact_path
 
       expect(page).to have_title("#{base_title} | Contact Us")
     end
