@@ -7,6 +7,7 @@ describe "UserPages" do
   describe "Sign up page" do
 		before { visit signup_path }
     it { should have_content('Sign Up') }
+    it { should have_content('Rails Tutorial') }
     it { should have_title("#{base_title} | Sign Up") }
   end # Sign up
 end # user pages
