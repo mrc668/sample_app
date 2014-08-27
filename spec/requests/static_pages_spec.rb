@@ -4,16 +4,26 @@ describe "Static pages" do
   let(:base_title) { "Ruby on Rails Tutorial Sample App" }
 	subject { page }
 
+	shared_examples_for "all static pages" do
+    it { should have_selector('li', text: 'Home') }
+    it { should have_selector('h1', text: heading) }
+    it { should have_title("#{base_title}") }
+    it { should have_title(page_title) }
+    it { should have_selector('footer', text: "") }
+	end
+	  
+
 #
 # Home
 #
   describe "Home Page" do
 		before { visit root_path }
+		let(:heading) { "Sample App" }
+		let(:page_title) { "" }
 
     it { should_not have_title("| Home") }
-    it { should have_content('Sample App') }
     it { should have_content('Sign Up Now') }
-    it { should have_title("#{base_title}") }
+		it_should_behave_like "all static pages"
 
   end # Home
 
@@ -22,10 +32,11 @@ describe "Static pages" do
 #
   describe "Help Page" do
 		before { visit help_path }
+		let(:heading) { "Help" }
+		let(:page_title) { "| Help" }
 
-    it { should have_content('Help') }
+		it_should_behave_like "all static pages"
     it { should have_content('Rails Tutorial') }
-    it { should have_title("#{base_title} | Help") }
 
   end # Help
 
@@ -34,10 +45,11 @@ describe "Static pages" do
 #
   describe "About Us Page" do
 		before { visit about_path }
+		let(:heading) { "About Us" }
+		let(:page_title) { "| About Us" }
 
-    it { should have_content('About Us') }
+		it_should_behave_like "all static pages"
     it { should have_content('Rails Tutorial') }
-    it { should have_title("#{base_title} | About Us") }
 
   end # about us
 
@@ -46,14 +58,27 @@ describe "Static pages" do
 #
   describe "Contact Us Page" do
 		before { visit contact_path }
+		let(:heading) { "Contact Us" }
+		let(:page_title) { "| Contact Us" }
 
-    it { should have_content('Contact Us') }
-    it { should have_content('306 581 5046') }
-    it { should have_content('milton@calnek.com') }
+		it_should_behave_like "all static pages"
     it { should have_content('Rails Tutorial') }
-    it { should have_title("#{base_title} | Contact Us") }
+
+    it { should have_content('306 581 5046') }
+    it { should_not have_content('milton@calnek.com') }
 
   end # Contact us
+
+#
+# Check Links
+#
+  it "should have the right links on the layout" do
+	  visit root_path
+		click_link "Home"
+		expect(page).to have_title("#{base_title}")
+		click_link "Contact"
+		expect(page).to have_title("| Contact")
+	end # Check links
 
 end # Static pages
 
