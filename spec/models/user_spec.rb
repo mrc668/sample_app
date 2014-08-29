@@ -2,12 +2,20 @@ require 'spec_helper'
 
 describe User do
   #pending "add some examples to (or delete) #{__FILE__}"
-	before { @user = User.new(name: "Test User", email: "test@example.com") }
+	before { @user = User.new(
+	  name: "Test User", email: "test@example.com",
+		password: "foobar", password_confirmation: "foobar"
+	) }
 
 	subject {@user}
 
 	it { should respond_to(:name) }
 	it { should respond_to(:email) }
+	it { should respond_to(:password) }
+	it { should respond_to(:password_confirmation) }
+	it { should respond_to(:password_digest) }
+	it { should respond_to(:authenticate) }
+	it { should_not respond_to(:foo) }
 
 	it { should be_valid }
 
@@ -62,10 +70,45 @@ describe User do
   describe "when email is not unique" do
     before do
 		  user_with_same_email = @user.dup
+		  user_with_same_email.email = @user.email.upcase
 			user_with_same_email.save
-		end # dup & save
+		end # dup, upcase & save
 
 		it { should_not be_valid }
   end # dup email
       
+	describe "when password is not present" do
+	  before { @user = User.new(
+	    name: "Test User", email: "test@example.com",
+		  password: " ", password_confirmation: " "
+	  ) }
+		it { should_not be_valid }
+	end # mt password
+
+	describe "when password does not match confirmation" do
+	  before {@user.password_confirmation = "mismatch"}
+		it { should_not be_valid }
+	end # mismatch password
+
+	describe "with a password that is too short" do
+	  before {@user.password = "a" *5 } 
+		it { should_not be_valid }
+	end # too short
+
+	describe "return value of authenticate" do
+	  before {@user.save }
+		let( :found_user) { User.find_by(email: @user.email) }
+		
+		describe "with a valid password" do
+		 it { should eq found_user.authenticate(@user.password) }
+		end # validate valid password.
+
+		describe "with an invalid password" do
+		  let(:user_for_invalid_password) { found_user.authenticate("invalid") }
+			it { should_not eq user_for_invalid_password }
+			specify { expect(user_for_invalid_password).to be_false }
+		end # fail to valdate invalid password.
+
+	end # password validation
+
 end
