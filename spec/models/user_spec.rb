@@ -38,9 +38,8 @@ describe User do
     it "should be invalid" do
       addresses = %w[
         user@foo,com user_at_foo.org example.user@foo.  dbl@at@foo.com foo@bar_.com
-        foo@bar_baz.com foo@bar+baz.com milton!sysa!sysb!mailhub 
+        foo@bar_baz.com foo@bar+baz.com milton!sysa!sysb!mailhub foo@bar..com
       ]
-				#foo@bar..com
       addresses.each do |invalid_address|
         @user.email = invalid_address
         expect(@user).not_to be_valid
@@ -76,6 +75,16 @@ describe User do
 
 		it { should_not be_valid }
   end # dup email
+      
+  describe "when email is mixed case" do
+		let (:mixed_case_email) { "Test@ExAmple.Com"  }
+
+	  it "should be saved in lower case" do
+		  @user.email = mixed_case_email
+			@user.save
+			expect( @user.reload.email ).to eq mixed_case_email.downcase
+		end # save/restor/test email
+  end # mixed case email
       
 	describe "when password is not present" do
 	  before { @user = User.new(
