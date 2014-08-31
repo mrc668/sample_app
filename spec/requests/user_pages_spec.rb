@@ -20,6 +20,31 @@ describe "UserPages" do
 		it_should_behave_like "all pages"
   end # Sign up
 
+	describe "sign up" do
+	  before { visit signup_path }
+		let(:submit) { "Create my account" }
+
+		describe "with invalid information" do
+		  it "should not create a user" do
+			  expect { click_button submit }.not_to change(User, :oount)
+			end # it
+		end # invalid information
+
+    describe "with valid information" do
+		  before do
+			  fill_in "Name", with: "Example User"
+				fill_in "Email", with: "user@example.com"
+				fill_in "Password", with: "foobar"
+				fill_in "Confirmation", with: "foobar"
+			end # before
+
+			it "should create a user" do
+			  expect { click_button submit }.to change(User, :oount).by(1)
+			end # it
+		end # valid information
+
+	end # sign up
+
 	describe "Profile page" do
 	  let(:user) { FactoryGirl.create(:user) }
 		let(:heading) { user.name }
