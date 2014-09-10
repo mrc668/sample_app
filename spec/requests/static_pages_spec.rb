@@ -5,11 +5,12 @@ describe "Static pages" do
 	subject { page }
 
 	shared_examples_for "all static pages" do
-    it { should have_selector('li', text: 'Home') }
-    it { should have_selector('h1', text: heading) }
     it { should have_title("#{base_title}") }
     it { should have_title(page_title) }
-    it { should have_selector('footer', text: "") }
+    it { should have_link('Home', href: root_path) }
+    it { should have_selector('h1', text: heading) }
+    it { should have_selector('footer') }
+    it { should have_link('About', href: about_path) }
 	end
 	  
 

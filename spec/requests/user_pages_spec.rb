@@ -9,7 +9,7 @@ describe "UserPages" do
     it { should have_selector('h1', text: heading) }
     it { should have_title("#{base_title}") }
     it { should have_title(page_title) }
-    it { should have_selector('a', text: 'About') }
+    it { should have_selector('footer') }
 	end
 	  
   describe "Sign up page" do
