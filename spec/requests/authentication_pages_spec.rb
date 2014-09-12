@@ -36,6 +36,7 @@ describe "AuthenticationPages" do
 		describe "with valid info" do
 			let(:user) { FactoryGirl.create(:user) }
 		  let(:page_title) { user.name }
+		  let(:heading) { user.name }
 		  before do 
         fill_in "Email", with: user.email.upcase
 				fill_in "Password", with: user.password
@@ -45,9 +46,14 @@ describe "AuthenticationPages" do
 		  it_should_behave_like "all pages"
       #it { should have_selector('div.alert.alert-error') }
       it { should have_link('Profile', href: user_path(user)) }
-      it { should have_link('Sign Out', href: signout_path) }
+      it { should have_link('Sign out', href: signout_path) }
       it { should_not have_link('Sign In') }
-      it { should_not have_link('Sign In') }
-		end # invalid info
+
+			describe "followed by a sign out" do
+			  before { click_link 'Sign out' }
+				it { should have_link('Sign In') }
+			end # sign out
+		end # valid info
+
   end # sign in page
 end #  Auth pages
